@@ -1,16 +1,14 @@
-#!/bin/sh
+#!/bin/bash
 set -x
-if [ -f "/config/wine/drive_c/Program Files (x86)/Backblaze/bzbui.exe" ]
-then
-    wine64 "/config/wine/drive_c/Program Files (x86)/Backblaze/bzbui.exe" -noqiet &
-    sleep infinity
+
+install_bz_version="${INSTALL_BZ_VERSION:-8.0.1.595}"
+install_bz_url="${INSTALL_BZ_URL:-https://secure.backblaze.com/api/install_backblaze?file=bzinstall-win32-${install_bz_version}.exe}"
+
+if [[ ! -v REINSTALL_BZ && -f "/config/wine/drive_c/Program Files (x86)/Backblaze/bzbui.exe" ]]; then
 else
-    mkdir /config/wine/
-    cd /config/wine/
-    curl -L "https://www.backblaze.com/win32/install_backblaze.exe" --output "install_backblaze.exe"
-    ls -la
-    wine64 "install_backblaze.exe" &
-    #sleep 10
-    #ln -s /drive_d/ /config/wine/dosdevices/d:
-    sleep infinity
+  cd /config/wine/ || exit 1
+  curl -L "$install_bz_url" --output "install_backblaze.exe"
+  ls -la
+  wine64 "install_backblaze.exe" &
+  sleep infinity
 fi

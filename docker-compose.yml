@@ -1,0 +1,21 @@
+version: "2.2"
+services:
+  backblaze-personal-wine:
+    image: backblaze-personal-wine-container
+    container_name: backblaze-personal-wine-container
+    init: true
+    volumes:
+      - /var/lib/docker-compose/backblaze-personal-wine-container/:/config/
+      # - /mnt/btrfs-pool/root/@:/data/d__root
+      # - /mnt/btrfs-pool/home/@home:/data/e__home
+      # - /foo/bar:/data/f__foo-bar
+    networks:
+      backup-net:
+    ports:
+      - 8700:5800
+    environment:
+      USER_ID: 0
+      GROUP_ID: 0
+networks:
+  backup-net:
+    driver: bridge
